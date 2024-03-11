@@ -275,23 +275,53 @@ students[order_flag3, ]
   #     디렉토리명/ : 하위 디렉토리로 이동
 
 # 상대 경로 (현재 경로(./) -> csv 하위 디렉토리 이동(csv/) -> csv_exam.csv)
-df <- read.csv("./csv/csv_exam.csv")
+df <- read.csv("csv/csv_exam.csv")
 df
 # 절대 경로
 df2 <- read.csv("C:\\Users\\moons\\Documents\\GitHub\\ubion_m_5\\R\\csv\\csv_exam.csv")
 df2
 
+# 데이터프레임에서 상위 n개의 데이터를 출력 
+head(df)
+head(df, 2)
+# 데이터프레임에서 하위 n개의 데이터를 출력
+tail(df)
+tail(df, 1)
+# 데이터프레임의 크기를 출력하는 함수 
+dim(df)
+# 데이터프레임의 기본 정보를 출력하는 함수 
+str(df)
+# 데이터프레임의 뷰어창에서 확인 
+View(df)
+# 통계 요약 정보를 출력
+summary(df)
 
+## df 에서 english, math, science 데이터들의 합을 구해서 
+## df에 total 컬럼에 데이터를 대입 
+## mean_score 컬럼에 total를 3으로 나눈 데이터를 대입 
+# cbind()
+total <- df$english + df[['math']] + df[[5]]
+df <- cbind(df, total)
+df$mean_score <- df$total / 3
+df
 
-
-
-
-
-
-
-
-
-
+## 평균 성적을 기준으로 합격 여부를 판단하는 컬럼을 생성
+## 조건식을 이용한 파생 변수를 생성
+## mean_score가 65점 이상인 경우에는 pass
+## 65점 미만인 경우 fail
+## ifelse(조건식, 참일때의데이터, 거짓일때의데이터)
+df$check <- ifelse(df$mean_score >= 65, 'pass', 'fail')
+df
+## 평균 성적이 65 초과(df$mean_score > 65)인 경우 pass
+## 성적이 65점 이라면(df$mean_score == 65) hold
+## 65점 미만이라면 fail
+df$check2 <- ifelse(df$mean_score > 65, 
+       'pass', 
+       ifelse(
+         df$mean_score == 65, 
+         'hold', 
+         'fail'
+       ))
 
 
 
