@@ -323,5 +323,16 @@ df$check2 <- ifelse(df$mean_score > 65,
          'fail'
        ))
 
+# 외부의 패키지를 설치
+# 패키지 : 남들이 만들어논 함수의 덩어리(기능별로)
+# install.packages("패키지명")
+install.packages('dplyr')
+# 외부의 패키지를 사용
+# library(패키지명)
+library(dplyr)
 
+## 컬럼의 이름을 변경 
+## dplyr에 내장되어있는 함수 rename()
+## rename(데이터프레임명, 새 컬럼명 = 기존 컬럼명)
+df <- rename(df, total_score = total)
 

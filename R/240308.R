@@ -218,7 +218,7 @@ for (i in array_a){
   # 두번째 반복 : i = 2, res = 1 ::: res = 1 + 2 -> res = 3
   # 세번째 반복 : i = 3, res = 3 ::: res = 3 + 3 -> res = 6
   # 네번째 반복 : i = 4, res = 6 ::: res = 6 + 4 -> res = 10
-  res = res + i
+  명
 }
 res
 
