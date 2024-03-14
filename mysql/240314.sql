@@ -103,6 +103,24 @@ ORDER BY `sum` DESC;
 
 ## 국가(Country)별 총 이윤(Total Profit)의 합계를 구하고
 ## 총 이윤을 기준으로 내림차순 정렬
+SELECT `Country`, SUM(`Total Profit`) as `sum`
+FROM `sales records`
+GROUP BY `Country`
+HAVING `sum` > 28000000
+ORDER BY `sum` DESC
+LIMIT 3;
+
+## 아시아의 국가들 중 총 이윤의 합계 높은 5개 국가를 출력
+SELECT 
+`Country` as `국가`, SUM(`Total Profit`) as `총 이윤`
+FROM 
+`sales records`
+WHERE `Region` = 'Asia'
+GROUP BY `Country`
+ORDER BY `총 이윤` DESC
+LIMIT 5;
+
+
 
 
 
