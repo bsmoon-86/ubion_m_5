@@ -122,6 +122,11 @@ def signup2():
     except:
         return 'ID 중복'
 
+# 글쓰기 화면을 보여주는 주소를 생성 
+@app.route('/write')
+def write():
+    return render_template('write.html')
+
 
 
 ## Flask Class 안에 있는 함수(웹서버의 구동)를 호출 
