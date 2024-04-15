@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 import requests
 from konlpy.tag import Okt
+import time
 
 load_dotenv()
 
@@ -32,8 +33,9 @@ def search_insta(_text):
     driver = webdriver.Chrome()
     ## 인스타그램에 요청 
     driver.get('https://www.instagram.com')
-    # 대기 10초
-    driver.implicitly_wait(10)
+    # 대기 30초
+    driver.implicitly_wait(30)
+    time.sleep(1)
     # 인스타그램에 로그인 
     id_element = driver.find_element(
         By.CSS_SELECTOR, 
@@ -49,37 +51,43 @@ def search_insta(_text):
 
     # implicitly_wait() : html, css 정보가 모두 로드가 되면 시간에 무관하게 다음 코드가 실행
     # 입력한 시간이 초과될때 로드가 전부 안되어있으면 에러 발생
-    driver.implicitly_wait(10)
+    driver.implicitly_wait(30)
+    time.sleep(1)
     pass_element.send_keys(Keys.ENTER)
 
     # svg 태그 중 aria-label="검색" 인 태그를 선택
-    driver.implicitly_wait(10)
+    driver.implicitly_wait(30)
     search_element = driver.find_element(By.CSS_SELECTOR, 
                                         'svg[aria-label="검색"]')
     # search_element를 클릭
     search_element.click()
 
-    driver.implicitly_wait(10)
+    driver.implicitly_wait(30)
+    time.sleep(1)
     # 검색창에 input 태그를 선택
     search_input = driver.find_element(By.CSS_SELECTOR, 
                                     'input[aria-label="입력 검색"]')
     # search_input에 특정 문자열을 입력
     search_input.send_keys(_text)
 
-    driver.implicitly_wait(10)
+    driver.implicitly_wait(30)
+    time.sleep(1)
     ## 검색 리스트 전체를 검색
     list_element = driver.find_elements(
         By.CSS_SELECTOR, 
-        '.x9f619.x78zum5.xdt5ytf.x1iyjqo2.x6ikm8r.x1odjw0f.xh8yej3.xocp1fn .x1i10hfl'
+        '.x9f619.x78zum5.xdt5ytf.x1iyjqo2.x6ikm8r.x1odjw0f.xh8yej3.xocp1fn .x1i30hfl'
     )
     # print(len(list_element))
     # 검색 리스트에서 첫번째를 클릭 
     list_element[0].click() 
 
-    driver.implicitly_wait(10)
+    driver.implicitly_wait(30)
+    time.sleep(1)
+    driver.refresh()
+    driver.implicitly_wait(30)
     ## 게시글 링크를 모두 찾는다. 
     imgs = driver.find_elements(
-        By.CLASS_NAME, '_aagw'
+        By.CSS_SELECTOR, '._aagw'
     )
     # 게시글의 첫번째를 클릭 
     imgs[0].click()
@@ -91,6 +99,7 @@ def search_insta(_text):
     }
 
     driver.implicitly_wait(20)
+    time.sleep(1)
     for i in range(3):
         # 다음 버튼이 존재하지 않으면 ? -> 에러 발생 
         # try 구문을 이용하여 에러 발생시 print로 출력
@@ -108,7 +117,7 @@ def search_insta(_text):
                                         'div[class="_a9zs"]')
             # 이미지를 저장 
             img_element = driver.find_element(By.CSS_SELECTOR, 
-                                            '._aato ._aagv .x5yr21d.xu96u03.x10l6tqk.x13vifvy.x87ps6o.xh8yej3')
+                                            '._aato ._aagv .x5yr21d.xu96u03.x30l6tqk.x13vifvy.x87ps6o.xh8yej3')
             # 해당하는 이미지 태그에서 src 속성의 값을 출력
             img_src = img_element.get_attribute('src')
             # print(img_src)
@@ -127,6 +136,9 @@ def search_insta(_text):
             next_element.click()
         except:
             print('다음 버튼이 존재하지 않거나 에러 발생')
+            next_element = driver.find_element(By.CSS_SELECTOR, 
+                                '._aaqg ._abl-')
+            next_element.click()
     # 게시물을 닫아준다. 
     close_element = driver.find_element(By.CSS_SELECTOR, 
                                         'svg[aria-label="닫기"]')
