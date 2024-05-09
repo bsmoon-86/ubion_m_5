@@ -37,7 +37,24 @@
         <!-- select키 값, type 키 값의 input 태그 생성 -->
         <input type="text" name="select">
         <br>
-        <input type="text" name="type">
+        <!-- <input type="text" name="type"> -->
+        <!-- 
+            유저가 값을 입력하는 것이 아니라
+            값들중에서 데이터를 선택하도록 태그를 생성
+        -->
+        <!-- <select name="type"> -->
+            <!-- 유저가 선택할수 있는 목록 -->
+            <!-- <option value="bar">막대그래프</option>
+            <option value="line">선그래프</option>
+        </select> -->
+        <!-- radio button 생성 -->
+        <!-- radio button과 label을 연결 -->
+        <input type="radio" name="type" 
+        value="bar" id="r1">
+        <label for="r1">막대그래프</label>
+        <input type="radio" name="type" 
+        value="line" id="r2">
+        <label for="r2">선그래프</label>
         <br>
         <input type="submit">
     </form>
