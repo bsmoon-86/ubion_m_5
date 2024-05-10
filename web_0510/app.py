@@ -89,5 +89,35 @@ def login():
     else:
         return "로그인 실패"
 
+# 회원 가입 페이지를 보여주는 api 
+@app.route('/signup', methods=['get'])
+def signup2():
+    return render_template('signup.html')
+
+# 유저가 회원가입을 위한 데이터를 보내주는 api
+@app.route('/signup', methods=['post'])
+def signup():
+    # 유저가 보낸 데이터를 변수에 저장 
+    # 유저가 보낸 데이터는? -> request.form
+    # 데이터의 형태? {'input_id' : xxxx, 'input_pass' : xxxx, 'input_name' : xxxx}
+    # dict데이터에서 value 값들만 추출하는 방법? values()
+    req = request.form.values()
+    data = list(req)
+    # DB server에 회원 정보를 삽입(insert 구문)
+    # insert 쿼리문 작성
+    signup_query = """
+        insert into 
+        `user` 
+        values 
+        (%s, %s, %s)
+    """
+    # 가상공간에 쿼리문을 실행 
+    cursor.execute(signup_query, data)
+    # 데이터베이스와 가상공간의 데이터를 동기화
+    _db.commit()
+    # 로그인 화면으로 되돌아간다. ('/' 주소로 이동)
+    return redirect('/')
+    
+
 # 웹서버를 실행 
 app.run(port=80, debug=True)
