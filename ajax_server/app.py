@@ -70,4 +70,34 @@ def game_result():
     }
     return return_data
 
+# /game_result2 api 생성
+@app.route('/game_result2')
+def game_result2():
+    # 유저가 선택한 가위, 바위, 보 중 하나의 데이터를 변수에 저장 
+    _user = request.args['g2']
+    print("유저가 보낸 데이터 : ", _user)
+    _list = ['가위', '바위', '보']
+    _server = random.choice(_list)
+    print("서버가 선택한 데이터 : ", _server)
+    # game_table 생성 
+    game_table = {
+        '가위' : {
+            '가위' : '무승부', 
+            '바위' : '패배', 
+            '보' : '승리'
+        }, 
+        '바위' : {
+            '가위' : '승리', 
+            '바위' : '무승부', 
+            '보' : '패배'
+        }, 
+        '보' : {
+            '가위' : '패배', 
+            '바위' : '승리', 
+            '보' : '무승부'
+        }
+    }
+    result = game_table[_user][_server]
+    return result
+
 app.run(debug=True)

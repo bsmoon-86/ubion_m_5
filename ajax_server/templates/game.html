@@ -57,7 +57,7 @@
                                             유저 : ${res['user']}, 
                                             컴퓨터 : ${res['server']}, 
                                             결과 : ${res['result']}, 
-                                            승률 : ${win_rate}
+                                            승률 : ${win_rate}%
                                         </p>
                                     `
                                 )
@@ -67,6 +67,20 @@
                 )
             }
         )
+    </script>
+    <script>
+        // JS 함수 생성 
+        function game_link(){
+            // input태그중 name이 'g3'인 태그 중 선택이 된 태그의 
+            // value를 추출하여 변수에 저장
+            let _user = $('input[name="g3"]:checked').val()
+            // 특정 주소로 이동
+            let url = "/game_result2?g2="+_user
+            // 현재창 주소를 이동
+            // window.location.href = url
+            // 새로운 창을 생성하여 주소로 요청
+            window.open(url)
+        }
     </script>
 </head>
 <body>
@@ -87,5 +101,32 @@
     <div id="game_result">
 
     </div>
+
+    <!-- 
+        form 태그를 이용하여 동기 통신 방식으로 가위, 바위, 보 게임을 생성 
+    -->
+    <h3>form 태그를 이용한 게임</h3>
+    <form action="/game_result2" method="get">
+        <!-- 유저가 선택할수 있는 공간 -->
+        <input type="radio" name="g2" id="g2_1" value="가위">
+        <label for="g2_1">가위</label>
+        <input type="radio" name="g2" id="g2_2" value="바위">
+        <label for="g2_2">바위</label>
+        <input type="radio" name="g2" id="g2_3" value="보">
+        <label for="g2_3">보</label>
+        <br>
+        <!-- 제출 버튼 생성 -->
+        <input type="submit" value="게임시작">
+    </form>
+    <h3>하이퍼링크를 이용한 게임</h3>
+    <input type="radio" name="g3" id="g3_1" value="가위">
+    <label for="g3_1">가위</label>
+    <input type="radio" name="g3" id="g3_2" value="바위">
+    <label for="g3_2">바위</label>
+    <input type="radio" name="g3" id="g3_3" value="보">
+    <label for="g3_3">보</label>
+    <!-- 버튼 생성 -->
+    <!-- onclick속성은 JS 코드를 실행, 함수 호출 -->
+    <button onclick="game_link()">게임 시작</button>
 </body>
 </html>
