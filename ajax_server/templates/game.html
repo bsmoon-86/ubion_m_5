@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>    
+    <!-- Jquery 라이브러리 로드 -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(
+            function(){
+                // id가 'radio_button' 태그를 선택하여 클릭이 발생할 때
+                $('#radio_button').click(
+                    function(){
+                        // input 태그중 name의 값이 'g1' 태그를 선택
+                        // 체크가 되어있는 값을 변수에 저장
+                        let selected = $('input[name="g1"]:checked').val()
+                        // 확인 작업 (팝업 창)
+                        // alert(selected)
+                        // 서버에게 데이터를 보낸다. 
+                        $.ajax(
+                            // dict 형태의 데이터로 주소, 방식, 받아오는 데이터의 타입, 데이터
+                            {
+                                url : "/game_result", 
+                                method : 'post', 
+                                dataType : 'json', 
+                                data : {
+                                    'user' : selected
+                                }
+                            }
+                        )
+                    }
+                )
+            }
+        )
+    </script>
+</head>
+<body>
+    <h1>가위 바위 보 게임</h1>    
+    <!-- 비동기 방식 -->
+    <h3>비동기 방식</h3>
+    <!-- 가위, 바위, 보를 선택하는 버튼 생성 -->
+    <!-- case1 radio button -->
+    <input type="radio" name="g1" id="g1_1" value="가위">
+    <label for="g1_1">가위</label>
+    <input type="radio" name="g1" id="g1_2" value="바위">
+    <label for="g1_2">바위</label>
+    <input type="radio" name="g1" id="g1_3" value="보">
+    <label for="g1_3">보</label>
+    <br>
+    <button id="radio_button">게임 시작</button>
+</body>
+</html>
