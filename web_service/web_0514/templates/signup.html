@@ -100,6 +100,50 @@
     
     <!-- Custom styles for this template -->
     <link href="{{url_for('static',filename='css/sign-in.css')}}" rel="stylesheet">
+  
+    <!-- jQuery 로드 -->
+    <script src="{{url_for('static', filename='js/jquery-3.7.1.min.js')}}"></script>
+    <script>
+      // HTML문서가 준비가 완료되었을때
+      $(document).ready(
+        function(){
+          // id가 check_id인 태그가 클릭되었을때 
+          $('#check_id').click(
+            function(){
+              // input 태그중 name이 input_id 태그를 선택
+              let input_id = $('input[name="input_id"]').val()
+
+              // 유저가 입력한 id 값을 ajax를 이용하여 
+              // 서버에게 비동기 통신으로 보낸다.
+              $.ajax(
+                {
+                  url : '/check_id', 
+                  method : 'post', 
+                  data : {
+                    'input_id' : input_id
+                  }, 
+                  dataType : 'text'
+                }
+              )
+              .then(
+                function(res){
+                  // 비동기 통신으로 서버에서 온 데이터(res)를 확인 
+                  // res가 1이라면 사용 가능한 아이디
+                  if (res == '1'){
+                    // 중복체크 버튼을 숨긴다.
+                    $('#check_id').hide()
+                  }else{
+                    // 팝업창을 띄운다. 
+                    alert('사용이 불가능한 아이디')
+                  }
+                }
+              )
+            }
+          )
+        }
+      )
+    </script>
+  
   </head>
   <body class="d-flex align-items-center py-4 bg-body-tertiary">
     <!-- 모드 변환 아이콘 -->
@@ -168,18 +212,11 @@
           <input type="text" name="input_id" class="form-control" id="floatingInput" placeholder="name@example.com">
           <label for="floatingInput">ID</label>
         </div>
-        <!-- 두번째 유저의 입력 공간 -->
-        <div class="form-floating">
-          <input type="password" name="input_pass" class="form-control" id="floatingPassword" placeholder="Password">
-          <label for="floatingPassword">Password</label>
-        </div>
-        <!-- 로그인 버튼 -->
-        <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
-        
-        <!-- 회원 가입 버튼 생성 -->
-        <a href="/signup" 
+     
+        <!-- 아이디 체크 버튼 생성 -->
+        <p id="check_id" 
           class="btn btn-info w-100 py-2"
-          style="margin-top: 8px;">회원가입</a>
+          style="margin-top: 8px;">중복체크</p>
         
       </form>
     </main>

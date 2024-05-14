@@ -109,9 +109,9 @@ def check_id():
     db_result = db_execute(check_id_query, _id)
     # id가 사용가능한 경우 : db_result 존재하는 않을때
     if db_result:
-        result = 0
+        result = "0"
     else:
-        result = 1
+        result = "1"
     return result
 
 # 회원 정보를 받아와서 데이터베이스에 삽입을 하는 api 
