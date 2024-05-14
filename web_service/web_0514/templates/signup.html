@@ -248,7 +248,7 @@
     <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}"></script>
     <script>
       // id가 pass2인 태그를 선택하여 키보드 입력 이벤트가 발생했을 때
-      $('#pass2').keyup(
+      $('#pass2, #pass1').keyup(
         function(){
           // id가 pass1인 태그의 입력된 값을 변수에 저장 
           let pass1 = $('#pass1').val()
