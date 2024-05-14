@@ -132,6 +132,11 @@
                   if (res == '1'){
                     // 중복체크 버튼을 숨긴다.
                     $('#check_id').hide()
+                    // input중 name이 input_id인 태그를 수정 불가능(읽기 전용)
+                    $('input[name="input_id"]').attr('readonly', true)
+                    // 패스워드, 패드워드확인, 유저의 이름을 입력하는 공간을 보여준다.
+                    // id가 user_info인 태그를 선택하여 보여준다.
+                    $('#user_info').show()
                   }else{
                     // 팝업창을 띄운다. 
                     alert('사용이 불가능한 아이디')
@@ -201,7 +206,7 @@
 
     <!-- contents -->
     <main class="form-signin w-100 m-auto">
-      <form action="/main" method="post">
+      <form action="/signup2" method="post">
         <!-- 이미지 로고 -->
         <img class="mb-4" src="{{url_for('static', filename='img/bootstrap-logo.svg')}}" alt="" width="72" height="57">
         <!-- 로고 밑의 텍스트 -->
@@ -217,10 +222,48 @@
         <p id="check_id" 
           class="btn btn-info w-100 py-2"
           style="margin-top: 8px;">중복체크</p>
+
+        <!-- id가 user_info인 영역 생성 -->
+        <div id="user_info" style="display: none;">
+          <div class="form-floating">
+            <input type="password" name="input_pass" class="form-control" id="pass1">
+            <label for="pass1">Password</label>
+          </div>
+          <div class="form-floating">
+            <input type="password" class="form-control" id="pass2">
+            <label for="pass2">Confirm Password</label>
+          </div>
+          <div class="form-floating">
+            <input type="text" name="input_name" class="form-control" id="name1">
+            <label for="name1">Name</label>
+          </div>  
+            <!-- 회원 가입 버튼 (버튼을 비활성화) -->
+            <button id="signup" type="submit" class="btn btn-primary w-100 r-2" disabled>
+              회원가입
+            </button>
+        </div>
         
       </form>
     </main>
     <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}"></script>
-
+    <script>
+      // id가 pass2인 태그를 선택하여 키보드 입력 이벤트가 발생했을 때
+      $('#pass2').keyup(
+        function(){
+          // id가 pass1인 태그의 입력된 값을 변수에 저장 
+          let pass1 = $('#pass1').val()
+          let pass2 = $('#pass2').val()
+          // let pass2 = $(this).val()
+          // 조건식1 : pass1 == pass2
+          // 조건식2 : pass1 != "" and pass2 != ""
+          if ((pass1 == pass2) & (pass1 != "") & (pass2 != "")){
+            // id가 signup인 태그를 활성화 
+            $('#signup').removeAttr('disabled')
+          }else{
+            $('#signup').attr('disabled', true)
+          }
+        }
+      )
+    </script>
   </body>
 </html>
