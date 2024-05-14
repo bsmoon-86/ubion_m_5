@@ -1,5 +1,5 @@
 # flask 프레임 워크 안에 특정 기능들을 로드 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 # mysql과 연동을 하는 라이브러리 로드 
 import pymysql
 import pymysql.cursors
@@ -80,12 +80,64 @@ def main():
     # 로그인의 성공 여부 (조건식?? db_result가 존재하는가?)
     if db_result:
         # 로그인이 성공하는 경우 -> main.html을 되돌려준다. 
-        # return render_template('main.html')
-        return "login ok"
+        return render_template('main.html')
+        # return "login ok"
     else:
         # 로그인이 실패하는 경우 -> 로그인화면('/')으로 되돌아간다.
-        # return redirect('/?state=2')
-        return "login fail"
+        return redirect('/?state=2')
+        # return "login fail"
+
+# 회원 가입 화면을 보여주는 api 생성 
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+# id 사용 유무를 판단하는 api
+@app.route('/check_id', methods=['post'])
+def check_id():
+    # 프론트에서 비동기 통신으로 보내는 id 값을 변수에 저장
+    _id = request.form['input_id']
+    # 유저에게 받은 데이터 확인 
+    print(f"check_id[post] -> 유저 id : {_id}")
+    # 유저가 보낸 id값이 사용이 가능한가?
+    # 조건? -> 해당하는 아이디로 table에 데이터가 존재하는가?
+    check_id_query = """
+        select * from user 
+        where id = %s
+    """
+    # 함수 호출 
+    db_result = db_execute(check_id_query, _id)
+    # id가 사용가능한 경우 : db_result 존재하는 않을때
+    if db_result:
+        result = 0
+    else:
+        result = 1
+    return result
+
+# 회원 정보를 받아와서 데이터베이스에 삽입을 하는 api 
+@app.route('/signup2', methods=['post'])
+def signup2():
+    # 유저가 보낸 데이터를 변수에 저장 
+    _id = request.form['input_id']
+    _pass = request.form['input_pass']
+    _name = request.form['input_name']
+    print(f"/signup2[post] -> 유저 ID : {_id}, password : {_pass}, name : {_name}")
+    # 쿼리문 작성 
+    insert_user_query = """
+        insert into `user` 
+        values (%s, %s, %s)
+    """
+    # 함수 호출 (에러가 발생하는 경우가 있으니 try 생성)
+    try:
+        db_result = db_execute(insert_user_query, _id, _pass, _name)
+        print(db_result)
+    except:
+        db_result = 3
+    # 로그인 화면으로 되돌아간다. 
+    if db_result == 3:
+        return redirect(f'/?state={db_result}')
+    else:
+        return redirect('/')
 
 
 
