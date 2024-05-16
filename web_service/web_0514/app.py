@@ -1,11 +1,18 @@
 # flask 프레임 워크 안에 특정 기능들을 로드 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 # mysql과 연동을 하는 라이브러리 로드 
 import pymysql
-import pymysql.cursors
+from datetime import timedelta
 
 # Flask라는 Class 생성
 app = Flask(__name__)
+# secret_key 설정 (session데이터 암호화 키)
+app.secret_key = 'ABC'
+# session의 지속시간을 설정
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(seconds=10)
+
+# 세션 데이터 초기화 
+# session.clear()
 
 # 함수 생성
 # DB server와 연결하고 -> 가상공산 Cursor 생성 ->
@@ -43,15 +50,19 @@ def db_execute(query, *data):
 # 로그인 화면 
 @app.route("/")
 def index():
-    # 요청이 들어왔을 때 state라는 데이터가 존재하면 
-    try:
-        # 로그인이 실패한 경우
-        _state = request.args['state']
-    except:
-        # 처음 로그인 화면을 로드한 경우
-        _state = 1
-    # login.html 되돌려준다. 
-    return render_template('login.html', state = _state)
+    # 세션에 데이터가 존재한다면?
+    if 'user_id' in session:
+        return redirect('/index')
+    else:
+        # 요청이 들어왔을 때 state라는 데이터가 존재하면 
+        try:
+            # 로그인이 실패한 경우
+            _state = request.args['state']
+        except:
+            # 처음 로그인 화면을 로드한 경우
+            _state = 1
+        # login.html 되돌려준다. 
+        return render_template('login.html', state = _state)
 
 # 로그인 화면에서 id, password 데이터를 보내는 api 생성
 @app.route("/main", methods=['post'])
@@ -80,12 +91,25 @@ def main():
     # 로그인의 성공 여부 (조건식?? db_result가 존재하는가?)
     if db_result:
         # 로그인이 성공하는 경우 -> main.html을 되돌려준다. 
-        return render_template('main.html')
+        # session에 데이터를 저장 (dict에 새로운 키:벨류 추가)
+        session['user_id'] = _id
+        session['user_pass'] = _pass
+        return redirect('/index')
         # return "login ok"
     else:
         # 로그인이 실패하는 경우 -> 로그인화면('/')으로 되돌아간다.
         return redirect('/?state=2')
         # return "login fail"
+# /index 주소 api 생성
+@app.route('/index')
+def index2():
+    print(session)
+    # 세션에 데이터가 존재한다면 main.html되돌려준다. 
+    if "user_id" in session:
+        return render_template('main.html')
+    # 세션에 데이터가 존재하지 않는다면 로그인화면으로 되돌아간다. 
+    else:
+        return redirect('/')
 
 # 회원 가입 화면을 보여주는 api 생성 
 @app.route('/signup')
@@ -139,6 +163,12 @@ def signup2():
     else:
         return redirect('/')
 
+# 로그아웃
+@app.route('/logout')
+def logout():
+    # 세션 데이터를 제거
+    session.clear()
+    return redirect('/')
 
 
 # 웹서버를 실행
