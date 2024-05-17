@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- 외부의 css 파일을 로드 -->
+    <link rel="stylesheet"
+    href="{{url_for('static', filename='css/slide.css')}}">
+    <!-- 외부의 js 파일 로드 -->
+    <script src="{{url_for('static', filename='js/slide.js')}}">
+    </script>
+</head>
+<body onload="showSlide()">
+    <span class="slideshow-container">
+        <div class="slide-background">
+            <div class="slides fade">
+                <a href="https://www.naver.com">
+                    <img src="img1.jpg" class="slide_img">
+                </a>
+            </div>
+            <div class="slides fade">
+                <a href="https://www.google.com">
+                    <img src="img2.jpg" class="slide_img">
+                </a>
+            </div>
+            <div class="slides fade">
+                <a href="https://www.github.com">
+                    <img src="img3.jpg" class="slide_img">
+                </a>
+            </div>
+        </div>
+    </span>
+</body>
+</html>
