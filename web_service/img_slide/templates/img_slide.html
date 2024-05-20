@@ -15,21 +15,14 @@
 <body onload="showSlide()">
     <span class="slideshow-container">
         <div class="slide-background">
-            <div class="slides fade">
-                <a href="https://www.naver.com">
-                    <img src="img1.jpg" class="slide_img">
-                </a>
-            </div>
-            <div class="slides fade">
-                <a href="https://www.google.com">
-                    <img src="img2.jpg" class="slide_img">
-                </a>
-            </div>
-            <div class="slides fade">
-                <a href="https://www.github.com">
-                    <img src="img3.jpg" class="slide_img">
-                </a>
-            </div>
+            <!-- 반복문을 사용 -->
+            {% for i in range(cnt) %}
+                <div class="slides fade">
+                    <a href="{{links[i]}}">
+                        <img src="{{imgs[i]}}" class="slide_img">
+                    </a>
+                </div>
+            {% endfor %}
         </div>
     </span>
 </body>
