@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item_List</title>
+    {% include 'ga.html' %}
+</head>
+<body>
+    <!-- db_data라는 변수명으로 [{No, name, price, img_url},{}] -->
+    <div>
+        <span>
+            <img src="{{db_data[0]['img_url']}}" 
+            height="200px">
+        </span>
+        <span>
+            <p>
+                {{db_data[0]['name']}}
+            </p>
+            <p>
+                {{db_data[0]['price']}}원
+            </p>
+        </span>
+    </div>
+</body>
+</html>
