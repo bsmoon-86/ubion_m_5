@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from database import MyDB1
 
 app = Flask(__name__)
@@ -24,6 +24,18 @@ def shop():
     return render_template('item_list.html', 
                            db_data = db_result)
 
-
+# 상품의 정보를 출력하는 api을 생성 
+@app.route('/item_info')
+def item_info():
+    # 유저가 보낸 데이터가 존재 
+    # get 방식으로 보낸 데이터를 추출
+    item_id = request.args['no']
+    # 상품의 정보를 추출하는 쿼리문을 작성 
+    selected_item_info = """
+        select * from `items` where `No` = %s
+    """
+    db_result = mydb.sql_query(selected_item_info, item_id)
+    print(db_result)
+    return render_template('item_info.html', info = db_result)
 
 app.run(debug=True)

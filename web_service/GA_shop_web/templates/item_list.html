@@ -8,19 +8,21 @@
 </head>
 <body>
     <!-- db_data라는 변수명으로 [{No, name, price, img_url},{}] -->
-    <div>
-        <span>
-            <img src="{{db_data[0]['img_url']}}" 
-            height="200px">
-        </span>
-        <span>
-            <p>
-                {{db_data[0]['name']}}
-            </p>
-            <p>
-                {{db_data[0]['price']}}원
-            </p>
-        </span>
-    </div>
+    <!-- db_data의 개수만큼 반복 실행 -->
+    {% for data in db_data %}
+    <!-- 해당하는 영역을 클릭했을때 '/item_info' 주소로 이동 -->
+    <!-- 유저가 선택한 아이템의 고유번호인 No를 같이 보내준다. -->
+    <a href="/item_info?no={{data['No']}}">
+        <div>
+            <span>
+                <img src="{{data['img_url']}}" height="200px">
+            </span>
+            <span>
+                <p>{{data['name']}}</p>
+                <p>{{data['price']}}원</p>
+            </span>
+        </div>
+    </a>
+    {% endfor %}
 </body>
 </html>
