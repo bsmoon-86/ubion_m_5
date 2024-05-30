@@ -17,6 +17,7 @@
         function add_cart(){
             // input 태그에 유저가 입력한 데이터를 변수에 저장
             let cnt = $('#cnt').val()
+            // python에서 print와 같은 역할
             console.log(cnt)
             gtag(
                 'event', 'add_to_cart', 
@@ -26,6 +27,27 @@
                     items : [
                         {
                             item_id : "{{info[0]['No']}}",
+                            item_name : "{{info[0]['name']}}", 
+                            item_category : 'All', 
+                            price : {{info[0]['price']}}, 
+                            quantity : cnt
+                        }
+                    ]
+                }
+            )
+        }
+        function purchase(){
+            let cnt = $('#cnt').val()
+            console.log(cnt)
+            gtag(
+                'event', 'purchase', 
+                {
+                    currency : 'KRW', 
+                    value : {{info[0]['price']}} * cnt, 
+
+                    items : [
+                        {
+                            item_id : "{{info[0]['No']}}", 
                             item_name : "{{info[0]['name']}}", 
                             item_category : 'All', 
                             price : {{info[0]['price']}}, 
@@ -48,7 +70,7 @@
             <!-- 수량(숫자)을 입력하는 공간 -->
             <input type="number" id="cnt">
             <button onclick="add_cart()">장바구니에 추가</button>
-            <button>구매하기</button>
+            <button onclick="purchase()">구매하기</button>
         </span>
     </div>
 </body>
