@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item_List</title>
+    {% include 'ga.html' %}
+</head>
+<body>
+    <!-- db_data라는 변수명으로 [{No, name, price, img_url},{}] -->
+    <!-- db_data의 개수만큼 반복 실행 -->
+    {% for data in db_data %}
+    <!-- 해당하는 영역을 클릭했을때 '/item_info' 주소로 이동 -->
+    <!-- 유저가 선택한 아이템의 고유번호인 No를 같이 보내준다. -->
+    <a href="/item_info?no={{data['No']}}">
+        <div>
+            <span>
+                <img src="{{data['img_url']}}" height="200px">
+            </span>
+            <span>
+                <p>{{data['name']}}</p>
+                <p>{{data['price']}}원</p>
+            </span>
+        </div>
+    </a>
+    {% endfor %}
+</body>
+</html>
