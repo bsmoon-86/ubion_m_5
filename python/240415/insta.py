@@ -75,7 +75,7 @@ def search_insta(_text):
     ## 검색 리스트 전체를 검색
     list_element = driver.find_elements(
         By.CSS_SELECTOR, 
-        '.x9f619.x78zum5.xdt5ytf.x1iyjqo2.x6ikm8r.x1odjw0f.xh8yej3.xocp1fn .x1i30hfl'
+        '.x9f619.x78zum5.xdt5ytf.x1iyjqo2.x6ikm8r.x1odjw0f.xh8yej3.xocp1fn a'
     )
     # print(len(list_element))
     # 검색 리스트에서 첫번째를 클릭 
@@ -117,24 +117,25 @@ def search_insta(_text):
                                         'div[class="_a9zs"]')
             # 이미지를 저장 
             img_element = driver.find_element(By.CSS_SELECTOR, 
-                                            '._aato ._aagv .x5yr21d.xu96u03.x30l6tqk.x13vifvy.x87ps6o.xh8yej3')
+                                            'div[class="_aagv"] img')
             # 해당하는 이미지 태그에서 src 속성의 값을 출력
             img_src = img_element.get_attribute('src')
-            # print(img_src)
+            print(img_src)
             image_save(
                 img_src, 
                 "./", 
                 f"{_text}_{i}.png"
             )
-            # print(len(ids))
-            # print(len(commets))
+            print(len(ids))
+            print(len(commets))
             for id, commet in zip(ids, commets):
                 data['ID'].append(id.text)
                 data['Commet'].append(commet.text.replace('\n', ' '))
             next_element = driver.find_element(By.CSS_SELECTOR, 
                                             '._aaqg ._abl-')
             next_element.click()
-        except:
+        except Exception as e:
+            print(e)
             print('다음 버튼이 존재하지 않거나 에러 발생')
             next_element = driver.find_element(By.CSS_SELECTOR, 
                                 '._aaqg ._abl-')
